@@ -10,7 +10,7 @@ import {
 import { useState } from 'react'
 import { version } from '@renderer/utils/init'
 import { IoIosHelpCircle } from 'react-icons/io'
-import { getDriver } from '@renderer/App'
+import { getDriver } from '@renderer/utils/tour'
 import { useTranslation } from 'react-i18next'
 import UpdaterModal from '../updater/updater-modal'
 import SettingItem from '../base/base-setting-item'
