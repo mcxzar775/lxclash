@@ -1,8 +1,6 @@
 import { useCallback, useEffect, type ComponentType, type ReactElement } from 'react'
 import { useLocation, useNavigate, useRoutes } from 'react-router-dom'
 import { useTheme } from 'next-themes'
-import { useTranslation } from 'react-i18next'
-import 'driver.js/dist/driver.css'
 import { Button } from '@heroui/react'
 import {
   IoHomeOutline,
@@ -35,7 +33,6 @@ import { applyTheme, setNativeTheme, setTitleBarOverlay } from '@renderer/utils/
 import { platform } from '@renderer/utils/init'
 import { DEFAULT_ENABLE_TRAFFIC_LOGGER } from '../../shared/appConfig'
 import bgVideo from './assets/longxing-bg.mp4'
-import { createTourDriver } from '@renderer/utils/tour'
 
 interface NavigationItem {
   label: string
@@ -87,7 +84,6 @@ const pathTitles: Record<string, string> = {
 
 const App: React.FC = () => {
   const navigate = useNavigate()
-  const { t } = useTranslation()
   const location = useLocation()
   const page = useRoutes(routes)
   const { appConfig } = useAppConfig()
@@ -100,10 +96,6 @@ const App: React.FC = () => {
   } = appConfig || {}
 
   useTrafficLogger(enableTrafficLogger)
-
-  useEffect(() => {
-    createTourDriver(t, navigate)
-  }, [t, navigate])
 
   const setTitlebar = useCallback((): void => {
     if (!useWindowFrame && platform !== 'darwin') {

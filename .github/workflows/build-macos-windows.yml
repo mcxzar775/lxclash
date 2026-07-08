@@ -1,0 +1,253 @@
+name: Build LongXing macOS ARM64
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+env:
+  MIHOMO_VERSION: "1.19.27"
+  NPM_CONFIG_REGISTRY: "https://registry.npmjs.org/"
+  CI: "true"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  npm_config_arch: "arm64"
+  npm_config_target_arch: "arm64"
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+jobs:
+  build-macos:
+    name: macOS Apple Silicon ARM64
+    runs-on: macos-15
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.23.1"
+
+      - name: Check project structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Current directory:"
+          pwd
+
+          echo "Repository root:"
+          ls -la
+
+          test -f package.json || {
+            echo "ERROR: package.json not found in repository root"
+            exit 1
+          }
+
+          test -f electron.vite.config.ts || {
+            echo "ERROR: electron.vite.config.ts not found"
+            exit 1
+          }
+
+          test -f electron-builder.yml || {
+            echo "ERROR: electron-builder.yml not found"
+            exit 1
+          }
+
+          test -f src/main/index.ts || {
+            echo "ERROR: src/main/index.ts not found"
+            exit 1
+          }
+
+          test -f src/preload/index.ts || {
+            echo "ERROR: src/preload/index.ts not found"
+            exit 1
+          }
+
+          test -f src/native/sysproxy/package.json || {
+            echo "ERROR: src/native/sysproxy/package.json not found"
+            exit 1
+          }
+
+          test -f scripts/prepare.mjs || {
+            echo "ERROR: scripts/prepare.mjs not found"
+            exit 1
+          }
+
+          test -f scripts/install-git-hooks.mjs || {
+            echo "ERROR: scripts/install-git-hooks.mjs not found"
+            exit 1
+          }
+
+          echo "Project name: $(node -p "require('./package.json').name")"
+          echo "Project version: $(node -p "require('./package.json').version")"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            echo "pnpm install attempt ${attempt}/3"
+
+            if pnpm install --no-frozen-lockfile; then
+              exit 0
+            fi
+
+            if [ "$attempt" -lt 3 ]; then
+              echo "Install failed, retrying..."
+              sleep 8
+            fi
+          done
+
+          echo "Dependency installation failed after 3 attempts"
+          exit 1
+
+      - name: Typecheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm run typecheck
+
+      - name: Build macOS ARM64
+        shell: bash
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: |
+          set -euo pipefail
+          pnpm run build:mac
+
+      - name: Find build outputs
+        id: find_outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SEARCH_DIRS=()
+
+          for dir in release dist out build; do
+            if [ -d "$dir" ]; then
+              SEARCH_DIRS+=("$dir")
+              echo "Found output directory: $dir"
+            fi
+          done
+
+          if [ "${#SEARCH_DIRS[@]}" -eq 0 ]; then
+            echo "ERROR: no output directory found"
+            echo "Repository files:"
+            find . -maxdepth 3 -type f \
+              -not -path "./node_modules/*" \
+              -not -path "./.git/*" \
+              -print | sort | head -500
+            exit 1
+          fi
+
+          echo "Build files:"
+          find "${SEARCH_DIRS[@]}" \
+            -type f \
+            -not -path "*/mac-arm64/*.app/*" \
+            -not -path "*/mac/*.app/*" \
+            -print | sort
+
+          mapfile -d '' PACKAGES < <(
+            find "${SEARCH_DIRS[@]}" \
+              -type f \
+              \( \
+                -name "*.dmg" \
+                -o -name "*.pkg" \
+                -o -name "*.zip" \
+              \) \
+              -print0
+          )
+
+          echo "Installer count: ${#PACKAGES[@]}"
+
+          if [ "${#PACKAGES[@]}" -eq 0 ]; then
+            echo "ERROR: no DMG, PKG or ZIP installer found"
+            exit 1
+          fi
+
+      - name: Create SHA256 files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for dir in release dist out build; do
+            [ -d "$dir" ] || continue
+
+            while IFS= read -r -d '' file; do
+              echo "Create SHA256: $file"
+              shasum -a 256 "$file" > "${file}.sha256"
+            done < <(
+              find "$dir" \
+                -type f \
+                \( \
+                  -name "*.dmg" \
+                  -o -name "*.pkg" \
+                  -o -name "*.zip" \
+                \) \
+                -print0
+            )
+          done
+
+      - name: Create GitHub prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          TAG="mac-build-${{ github.run_number }}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Delete existing release: $TAG"
+            gh release delete "$TAG" --yes --cleanup-tag
+          fi
+
+          gh release create "$TAG" \
+            --title "龙行科技 macOS ARM64 #${{ github.run_number }}" \
+            --notes "龙行科技 macOS Apple Silicon ARM64 自动构建测试版。" \
+            --prerelease
+
+          UPLOADED=0
+
+          for dir in release dist out build; do
+            [ -d "$dir" ] || continue
+
+            while IFS= read -r -d '' file; do
+              echo "Upload: $file"
+              gh release upload "$TAG" "$file" --clobber
+              UPLOADED=$((UPLOADED + 1))
+            done < <(
+              find "$dir" \
+                -type f \
+                \( \
+                  -name "*.dmg" \
+                  -o -name "*.pkg" \
+                  -o -name "*.zip" \
+                  -o -name "*.dmg.sha256" \
+                  -o -name "*.pkg.sha256" \
+                  -o -name "*.zip.sha256" \
+                \) \
+                -print0
+            )
+          done
+
+          if [ "$UPLOADED" -eq 0 ]; then
+            echo "ERROR: no files uploaded"
+            exit 1
+          fi
+
+          echo "Uploaded files: $UPLOADED"
+          echo "Release tag: $TAG"
