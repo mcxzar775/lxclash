@@ -33,6 +33,7 @@ import { applyTheme, setNativeTheme, setTitleBarOverlay } from '@renderer/utils/
 import { platform } from '@renderer/utils/init'
 import { DEFAULT_ENABLE_TRAFFIC_LOGGER } from '../../shared/appConfig'
 import bgVideo from './assets/longxing-bg.mp4'
+import brandMark from './assets/longxing-logo-mark.png'
 
 interface NavigationItem {
   label: string
@@ -153,7 +154,7 @@ const App: React.FC = () => {
 
       <aside className="lx-sidebar">
         <div className={`lx-brand app-drag ${platform === 'darwin' && !useWindowFrame ? 'lx-brand-mac' : ''}`}>
-          <div className="lx-brand-mark">龍</div>
+          <div className="lx-brand-mark"><img src={brandMark} alt="龙行科技" /></div>
           <div>
             <div className="lx-brand-name">龙行科技</div>
             <div className="lx-brand-subtitle">LONGXING CONTROL CENTER</div>
