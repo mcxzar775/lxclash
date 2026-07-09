@@ -1,14 +1,11 @@
-import { Button, Card, CardBody, CardFooter, Tooltip } from '@heroui/react'
+import { Button, Card, CardBody, Switch, Tooltip } from '@heroui/react'
 import { toast } from '@renderer/components/base/toast'
-import BorderSwitch from '@renderer/components/base/border-swtich'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppConfig } from '@renderer/hooks/use-app-config'
 import { triggerSysProxy, updateTrayIconImmediate } from '@renderer/utils/ipc'
 import { useControledMihomoConfig } from '@renderer/hooks/use-controled-mihomo-config'
 import { AiOutlineGlobal } from 'react-icons/ai'
 import React from 'react'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -25,34 +22,20 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
   const { controledMihomoConfig } = useControledMihomoConfig()
   const { sysProxy, sysproxyCardStatus = 'col-span-1', disableAnimations = false } = appConfig || {}
   const { tun } = controledMihomoConfig || {}
-  const { enable } = sysProxy || {}
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform: tf,
-    transition,
-    isDragging
-  } = useSortable({
-    id: 'sysproxy'
-  })
-  const transform = tf ? { x: tf.x, y: tf.y, scaleX: 1, scaleY: 1 } : null
-  const onChange = async (enable: boolean): Promise<void> => {
-    const previousState = !enable
-    const tunEnabled = tun?.enable ?? false
+  const { enable = false } = sysProxy || {}
 
-    // 立即更新图标
-    updateTrayIconImmediate(enable, tunEnabled)
+  const onChange = async (nextEnable: boolean): Promise<void> => {
+    const previousState = !nextEnable
+    const tunEnabled = tun?.enable ?? false
+    updateTrayIconImmediate(nextEnable, tunEnabled)
 
     try {
-      await patchAppConfig({ sysProxy: { enable } })
-      await triggerSysProxy(enable)
-
+      await patchAppConfig({ sysProxy: { enable: nextEnable } })
+      await triggerSysProxy(nextEnable)
       window.electron.ipcRenderer.send('updateFloatingWindow')
       window.electron.ipcRenderer.send('updateTrayMenu')
     } catch (e) {
       await patchAppConfig({ sysProxy: { enable: previousState } })
-      // 回滚图标
       updateTrayIconImmediate(previousState, tunEnabled)
       toast.error(String(e))
     }
@@ -67,9 +50,7 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
             isIconOnly
             color={match ? 'primary' : 'default'}
             variant={match ? 'solid' : 'light'}
-            onPress={() => {
-              navigate('/sysproxy')
-            }}
+            onPress={() => navigate('/sysproxy')}
           >
             <AiOutlineGlobal className="text-[20px]" />
           </Button>
@@ -79,48 +60,29 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
   }
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        transform: CSS.Transform.toString(transform),
-        transition,
-        zIndex: isDragging ? 'calc(infinity)' : undefined
-      }}
-      className={`${sysproxyCardStatus} sysproxy-card`}
-    >
+    <div className={`${sysproxyCardStatus} sysproxy-card lx-quick-card-wrap`}>
       <Card
         fullWidth
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners}
-        className={`${match ? 'bg-primary' : 'hover:bg-primary/30'} ${disableAnimations ? '' : `motion-reduce:transition-transform-background ${isDragging ? 'scale-[0.95] tap-highlight-transparent' : ''}`}`}
+        isPressable
+        onPress={() => navigate('/sysproxy')}
+        className={`lx-toggle-card ${match ? 'is-active' : ''} ${enable ? 'is-enabled' : ''} ${disableAnimations ? '' : 'transition-transform-background'}`}
       >
-        <CardBody className="pb-1 pt-0 px-0">
-          <div className="flex justify-between">
-            <Button
-              isIconOnly
-              className="bg-transparent pointer-events-none"
-              variant="flat"
-              color="default"
-            >
-              <AiOutlineGlobal
-                className={`${match ? 'text-primary-foreground' : 'text-foreground'} text-[24px] font-bold`}
-              />
-            </Button>
-            <BorderSwitch
-              isShowBorder={match && enable}
-              isSelected={enable ?? false}
-              onValueChange={onChange}
-            />
+        <CardBody className="lx-toggle-card-body">
+          <div className="lx-toggle-icon">
+            <AiOutlineGlobal />
           </div>
+          <div className="lx-toggle-text">
+            <h3>{t('sider.cards.systemProxy')}</h3>
+            <p>{enable ? '已开启' : '已关闭'}</p>
+          </div>
+          <Switch
+            size="sm"
+            className="lx-card-switch app-nodrag"
+            isSelected={enable}
+            onValueChange={onChange}
+            onClick={(e) => e.stopPropagation()}
+          />
         </CardBody>
-        <CardFooter className="pt-1">
-          <h3
-            className={`text-md font-bold sider-card-title ${match ? 'text-primary-foreground' : 'text-foreground'}`}
-          >
-            {t('sider.cards.systemProxy')}
-          </h3>
-        </CardFooter>
       </Card>
     </div>
   )

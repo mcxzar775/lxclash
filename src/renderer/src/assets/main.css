@@ -592,3 +592,176 @@ body,
     display: none;
   }
 }
+
+/* LongXing v2.3.1 UI rebuild: clean switch cards and setting rows */
+.lx-command-strip {
+  grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) minmax(230px, 1fr) minmax(230px, 1fr);
+  align-items: stretch;
+}
+
+.lx-quick-card-wrap,
+.lx-command-card {
+  min-height: 82px;
+}
+
+.lx-toggle-card {
+  height: 82px;
+  border-radius: 16px !important;
+  border: 1px solid rgba(111, 190, 255, .18) !important;
+  background: linear-gradient(145deg, rgba(7, 23, 42, .76), rgba(7, 15, 28, .58)) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .18) !important;
+  overflow: hidden;
+}
+
+.lx-toggle-card:hover {
+  border-color: rgba(97, 186, 255, .34) !important;
+  background: linear-gradient(145deg, rgba(10, 34, 61, .82), rgba(9, 19, 36, .62)) !important;
+}
+
+.lx-toggle-card.is-active,
+.lx-toggle-card.is-enabled {
+  border-color: rgba(91, 179, 255, .44) !important;
+  background: linear-gradient(135deg, rgba(42, 141, 229, .93), rgba(16, 80, 147, .78)) !important;
+  box-shadow: 0 18px 48px rgba(20, 119, 218, .28) !important;
+}
+
+.lx-toggle-card-body {
+  height: 82px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px !important;
+}
+
+.lx-toggle-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #cfeeff;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.lx-toggle-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.lx-toggle-card.is-active .lx-toggle-icon,
+.lx-toggle-card.is-enabled .lx-toggle-icon {
+  color: #fff;
+  background: rgba(255, 255, 255, .15);
+}
+
+.lx-toggle-text {
+  min-width: 0;
+  text-align: left;
+}
+
+.lx-toggle-text h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: rgba(239, 248, 255, .96);
+}
+
+.lx-toggle-text p {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: rgba(196, 220, 240, .62);
+}
+
+.lx-toggle-card.is-active .lx-toggle-text p,
+.lx-toggle-card.is-enabled .lx-toggle-text p {
+  color: rgba(255, 255, 255, .78);
+}
+
+.lx-card-switch {
+  transform: scale(1.08);
+  transform-origin: right center;
+  z-index: 10;
+}
+
+.lx-page-glass [data-slot='base'] {
+  max-width: 100%;
+}
+
+.lx-page-glass [data-slot='content'] {
+  overflow: visible;
+}
+
+.lx-setting-item {
+  min-height: 48px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, auto);
+  align-items: center;
+  gap: 18px;
+  padding: 6px 10px;
+  border-radius: 12px;
+}
+
+.lx-setting-item:hover {
+  background: rgba(110, 177, 255, .055);
+}
+
+.lx-setting-title-wrap {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lx-setting-title {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: rgba(235, 246, 255, .88);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.lx-setting-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.lx-setting-control {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.lx-setting-control > [data-slot='base'] {
+  flex-shrink: 0;
+}
+
+.lx-setting-control [data-slot='wrapper'] {
+  flex-shrink: 0;
+}
+
+.lx-setting-divider {
+  margin: 4px 0 !important;
+  opacity: .45;
+}
+
+@media (max-width: 900px) {
+  .lx-setting-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .lx-setting-control {
+    justify-content: flex-start;
+  }
+}
