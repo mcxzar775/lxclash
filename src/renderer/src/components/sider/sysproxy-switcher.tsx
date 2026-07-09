@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Switch, Tooltip } from '@heroui/react'
+import { Button, Card, CardBody, Tooltip } from '@heroui/react'
 import { toast } from '@renderer/components/base/toast'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppConfig } from '@renderer/hooks/use-app-config'
@@ -75,13 +75,21 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
             <h3>{t('sider.cards.systemProxy')}</h3>
             <p>{enable ? '已开启' : '已关闭'}</p>
           </div>
-          <Switch
-            size="sm"
-            className="lx-card-switch app-nodrag"
-            isSelected={enable}
-            onValueChange={onChange}
-            onClick={(e) => e.stopPropagation()}
-          />
+          <button
+            type="button"
+            className={`lx-pill-switch app-nodrag ${enable ? 'is-on' : 'is-off'}`}
+            aria-pressed={enable}
+            aria-label={`${t('sider.cards.systemProxy')} ${enable ? '已开启' : '已关闭'}`}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation()
+              void onChange(!enable)
+            }}
+          >
+            <span className="lx-pill-switch-label lx-pill-switch-label-off">OFF</span>
+            <span className="lx-pill-switch-label lx-pill-switch-label-on">ON</span>
+            <span className="lx-pill-switch-thumb" />
+          </button>
         </CardBody>
       </Card>
     </div>
