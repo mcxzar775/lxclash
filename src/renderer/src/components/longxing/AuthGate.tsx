@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Button, Input, Spinner } from '@heroui/react'
+import { Button, Spinner } from '@heroui/react'
 import bgVideo from '../../assets/longxing-bg.mp4'
+import logoMark from '../../assets/longxing-logo-mark.png'
 
 interface AuthState {
   authorized: boolean
@@ -113,21 +114,27 @@ export default function AuthGate({ children }: AuthGateProps) {
         />
         <div className="relative h-full flex items-center justify-center px-6">
           <div className="w-full max-w-md rounded-3xl border border-cyan-500/25 bg-[#081827]/95 p-8 shadow-2xl shadow-blue-950/60">
-            <div className="mx-auto mb-5 h-16 w-16 rounded-2xl border border-amber-400/70 flex items-center justify-center text-3xl font-bold text-amber-300">龍</div>
+            <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl border border-cyan-300/25 bg-white/8 shadow-[0_0_34px_rgba(56,189,248,.16)]">
+              <img src={logoMark} alt="龙行科技" className="h-16 w-16 object-contain" />
+            </div>
             <div className="text-center tracking-[.28em] text-xs text-cyan-300 mb-2">LONGXING CONTROL CENTER</div>
             <h1 className="text-center text-2xl font-bold mb-2">龙行科技授权登录</h1>
             <p className="text-center text-sm text-slate-400 mb-7">验证成功后自动导入并启用专属订阅，随后进入完整客户端。</p>
-            <Input
-              label="客户授权码"
-              value={accessKey}
-              onValueChange={setAccessKey}
-              placeholder="请输入授权码"
-              variant="bordered"
-              autoFocus
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') void submit()
-              }}
-            />
+            <label className="lx-auth-field app-nodrag">
+              <span className="lx-auth-label">客户授权码</span>
+              <input
+                className="lx-auth-input"
+                value={accessKey}
+                onChange={(event) => setAccessKey(event.target.value)}
+                placeholder="请输入客户授权码，例如 LX-XXXX-XXXX"
+                autoFocus
+                spellCheck={false}
+                autoComplete="off"
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') void submit()
+                }}
+              />
+            </label>
             <div className="mt-4 rounded-xl bg-black/25 px-4 py-3 text-xs text-slate-400">
               <div className="mb-1">设备编号</div>
               <code className="text-cyan-300 select-all">{deviceId}</code>

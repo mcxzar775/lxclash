@@ -892,3 +892,253 @@ body,
     grid-template-columns: 44px minmax(0, 1fr) 82px !important;
   }
 }
+
+/* LongXing v2.3.4 full layout + switch final polish */
+.lx-layout,
+.lx-shell,
+.lx-page,
+.lx-main,
+.lx-content {
+  letter-spacing: .01em;
+}
+
+.lx-command-strip {
+  grid-template-columns: minmax(230px, .9fr) minmax(230px, .9fr) minmax(260px, 1fr) minmax(220px, .85fr) !important;
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+.lx-quick-card-wrap,
+.lx-command-card,
+.lx-toggle-card {
+  min-height: 86px !important;
+  max-height: 98px !important;
+}
+
+.lx-toggle-card {
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+.lx-toggle-card-body {
+  height: 86px !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) 76px !important;
+  gap: 13px !important;
+  padding: 14px 16px !important;
+  align-items: center !important;
+}
+
+.lx-toggle-text h3 {
+  font-size: 17px !important;
+  line-height: 1.15 !important;
+  max-width: 120px !important;
+  word-break: keep-all !important;
+}
+
+.lx-toggle-text p {
+  margin-top: 7px !important;
+  font-size: 12px !important;
+}
+
+.lx-clean-switch {
+  position: relative;
+  width: 66px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  cursor: pointer;
+  flex: 0 0 66px;
+  overflow: visible;
+  background: transparent;
+  outline: none;
+}
+
+.lx-clean-switch-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, .96), rgba(15, 23, 42, .92));
+  border: 1px solid rgba(148, 163, 184, .34);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 10px 22px rgba(0,0,0,.28);
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.lx-clean-switch-thumb {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  left: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f8fbff, #d7e2ef);
+  box-shadow: 0 7px 16px rgba(0,0,0,.40);
+  transition: left .18s ease, transform .18s ease, background .18s ease;
+}
+
+.lx-clean-switch-text {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 9px 0 34px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  color: rgba(226,232,240,.72);
+  pointer-events: none;
+}
+
+.lx-clean-switch.is-on .lx-clean-switch-track {
+  background: linear-gradient(135deg, rgba(16, 185, 129, .98), rgba(34, 197, 94, .76));
+  border-color: rgba(91, 255, 173, .72);
+  box-shadow: 0 0 0 1px rgba(74,222,128,.18), 0 0 28px rgba(34,197,94,.22);
+}
+
+.lx-clean-switch.is-on .lx-clean-switch-thumb {
+  left: 36px;
+  background: linear-gradient(180deg, #ffffff, #d9ffeb);
+}
+
+.lx-clean-switch.is-on .lx-clean-switch-text {
+  justify-content: flex-start;
+  padding: 0 34px 0 9px;
+  color: #fff;
+}
+
+.lx-clean-switch:hover .lx-clean-switch-thumb {
+  transform: scale(1.05);
+}
+
+/* Make every HeroUI switch render as a normal horizontal switch, not a vertical clipped checkbox */
+[data-slot='base'][data-selected],
+[data-slot='base'][role='switch'],
+[role='switch'][data-slot='base'] {
+  min-width: 62px !important;
+  width: 62px !important;
+  display: inline-flex !important;
+  justify-content: flex-end !important;
+  overflow: visible !important;
+}
+
+[data-slot='wrapper'] {
+  width: 56px !important;
+  min-width: 56px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(148, 163, 184, .35) !important;
+  background: linear-gradient(135deg, rgba(30,41,59,.95), rgba(15,23,42,.88)) !important;
+  padding: 2px !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 8px 18px rgba(0,0,0,.18) !important;
+  overflow: visible !important;
+}
+
+[data-slot='thumb'] {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(180deg, #f8fbff, #d8e4f0) !important;
+  box-shadow: 0 6px 14px rgba(0,0,0,.36) !important;
+  transform: translateX(0) !important;
+}
+
+[data-selected='true'] [data-slot='wrapper'],
+[aria-checked='true'] [data-slot='wrapper'] {
+  border-color: rgba(74, 222, 128, .75) !important;
+  background: linear-gradient(135deg, rgba(16,185,129,.98), rgba(34,197,94,.74)) !important;
+}
+
+[data-selected='true'] [data-slot='thumb'],
+[aria-checked='true'] [data-slot='thumb'] {
+  transform: translateX(26px) !important;
+}
+
+.lx-setting-item {
+  grid-template-columns: minmax(210px, 1fr) minmax(220px, auto) !important;
+  min-height: 58px !important;
+  padding: 10px 16px !important;
+  margin: 2px 0 !important;
+}
+
+.lx-setting-control {
+  justify-content: flex-end !important;
+  padding-right: 10px !important;
+  min-width: 220px !important;
+}
+
+.lx-page-glass,
+.lx-page-glass [data-slot='base'],
+.lx-page-glass [data-slot='content'] {
+  overflow: visible !important;
+}
+
+/* Auth login: plain input avoids HeroUI label overlap under scaled/blurred layout */
+.lx-auth-field {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.lx-auth-label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(203, 231, 255, .78);
+}
+
+.lx-auth-input {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(87, 188, 255, .34);
+  background: rgba(2, 12, 24, .78);
+  color: rgba(245, 252, 255, .96);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  padding: 0 16px;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 0 0 0 rgba(56,189,248,0);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.lx-auth-input::placeholder {
+  color: rgba(148, 174, 198, .52);
+  font-weight: 500;
+}
+
+.lx-auth-input:focus {
+  border-color: rgba(56, 189, 248, .78);
+  background: rgba(5, 18, 33, .90);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, .14), 0 14px 30px rgba(0,0,0,.24);
+}
+
+@media (max-width: 1120px) {
+  .lx-command-strip {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .lx-command-strip {
+    grid-template-columns: 1fr !important;
+  }
+  .lx-setting-item {
+    grid-template-columns: 1fr !important;
+  }
+  .lx-setting-control {
+    justify-content: flex-start !important;
+    min-width: 0 !important;
+  }
+}

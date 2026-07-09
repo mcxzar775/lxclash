@@ -77,7 +77,7 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
           </div>
           <button
             type="button"
-            className={`lx-pill-switch app-nodrag ${enable ? 'is-on' : 'is-off'}`}
+            className={`lx-clean-switch app-nodrag ${enable ? 'is-on' : 'is-off'}`}
             aria-pressed={enable}
             aria-label={`${t('sider.cards.systemProxy')} ${enable ? '已开启' : '已关闭'}`}
             onPointerDown={(e) => e.stopPropagation()}
@@ -86,9 +86,9 @@ const SysproxySwitcher: React.FC<Props> = (props) => {
               void onChange(!enable)
             }}
           >
-            <span className="lx-pill-switch-label lx-pill-switch-label-off">OFF</span>
-            <span className="lx-pill-switch-label lx-pill-switch-label-on">ON</span>
-            <span className="lx-pill-switch-thumb" />
+            <span className="lx-clean-switch-track" />
+            <span className="lx-clean-switch-thumb" />
+            <span className="lx-clean-switch-text">{enable ? 'ON' : 'OFF'}</span>
           </button>
         </CardBody>
       </Card>
