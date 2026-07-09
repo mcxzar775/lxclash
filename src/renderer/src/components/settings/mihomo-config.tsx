@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from '@renderer/components/base/toast'
-import { Button, Input, Select, SelectItem, Switch, Tooltip } from '@heroui/react'
+import {Button, Input, Select, SelectItem, Tooltip} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { useAppConfig } from '@renderer/hooks/use-app-config'
 import debounce from '@renderer/utils/debounce'
 import {
@@ -203,7 +204,7 @@ const MihomoConfig: React.FC = () => {
         }
         divider
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={gistAgeEncrypt}
           onValueChange={(v) => {
@@ -350,7 +351,7 @@ const MihomoConfig: React.FC = () => {
         }
         divider
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={diffWorkDir}
           onValueChange={async (v) => {
@@ -375,7 +376,7 @@ const MihomoConfig: React.FC = () => {
         }
         divider
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={useHotReloadProfile}
           onValueChange={(v) => {
@@ -395,7 +396,7 @@ const MihomoConfig: React.FC = () => {
         }
         divider
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isDisabled={!useHotReloadProfile}
           isSelected={hotReloadProfileAutoCloseConnection}
@@ -406,7 +407,7 @@ const MihomoConfig: React.FC = () => {
       </SettingItem>
 
       <SettingItem title={t('mihomo.autoCloseConnection')} divider>
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={autoCloseConnection}
           onValueChange={(v) => {
@@ -425,7 +426,7 @@ const MihomoConfig: React.FC = () => {
         }
         divider
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={testProfileOnStart}
           onValueChange={(v) => {
@@ -479,7 +480,7 @@ const MihomoConfig: React.FC = () => {
         })}
       </div>
       <SettingItem title={t('mihomo.disableDnsOnPauseSSID')}>
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={disableDnsOnPauseSSID}
           onValueChange={(v) => {

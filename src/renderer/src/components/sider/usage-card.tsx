@@ -1,4 +1,5 @@
-import { Button, Card, CardBody, CardFooter, Progress, Switch, Tooltip } from '@heroui/react'
+import {Button, Card, CardBody, CardFooter, Progress, Tooltip} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { mihomoProxyProviders } from '@renderer/utils/ipc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { calcTraffic, calcPercent } from '@renderer/utils/calc'
@@ -55,7 +56,7 @@ const UsageCard: React.FC<Props> = (props) => {
       onPointerDown={(e) => e.stopPropagation()}
     >
       <Tooltip content={t('settings.enableTrafficLogger')} placement="top">
-        <Switch
+        <LxSwitch
           size="sm"
           aria-label={t('settings.enableTrafficLogger')}
           isSelected={enableTrafficLogger}

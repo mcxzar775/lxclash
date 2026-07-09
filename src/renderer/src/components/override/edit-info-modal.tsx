@@ -1,13 +1,5 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  Switch
-} from '@heroui/react'
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import React, { useState } from 'react'
 import { mihomoHotReloadConfig } from '@renderer/utils/ipc'
 import { useTranslation } from 'react-i18next'
@@ -64,7 +56,7 @@ const EditInfoModal: React.FC<Props> = (props) => {
             </SettingItem>
           )}
           <SettingItem title={t('override.editInfo.global')}>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={values.global}
               onValueChange={(v) => {

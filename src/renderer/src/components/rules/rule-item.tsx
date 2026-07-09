@@ -1,4 +1,5 @@
-import { Card, CardBody, Chip, Switch } from '@heroui/react'
+import {Card, CardBody, Chip} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import React, { useState, useEffect } from 'react'
 import { mihomoRulesDisable } from '@renderer/utils/ipc'
 import { useTranslation } from 'react-i18next'
@@ -79,7 +80,7 @@ const RuleItem: React.FC<RuleItemProps> = (props) => {
                         {rate.toFixed(1)}%
                       </Chip>
                     </div>
-                    <Switch
+                    <LxSwitch
                       size="sm"
                       isSelected={isEnabled}
                       onValueChange={handleToggle}

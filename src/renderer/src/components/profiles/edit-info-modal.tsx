@@ -1,20 +1,5 @@
-import {
-  cn,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  Switch,
-  Select,
-  SelectItem,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem
-} from '@heroui/react'
+import {cn, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { toast } from '@renderer/components/base/toast'
 import React, { useState } from 'react'
 import { useOverrideConfig } from '@renderer/hooks/use-override-config'
@@ -199,7 +184,7 @@ const EditInfoModal: React.FC<Props> = (props) => {
                 />
               </SettingItem>
               <SettingItem title={t('profiles.editInfo.useProxy')}>
-                <Switch
+                <LxSwitch
                   size="sm"
                   isSelected={values.useProxy ?? false}
                   onValueChange={(v) => {
@@ -208,7 +193,7 @@ const EditInfoModal: React.FC<Props> = (props) => {
                 />
               </SettingItem>
               <SettingItem title={t('profiles.editInfo.autoUpdate')}>
-                <Switch
+                <LxSwitch
                   size="sm"
                   isSelected={values.autoUpdate ?? false}
                   onValueChange={(v) => {
@@ -274,7 +259,7 @@ const EditInfoModal: React.FC<Props> = (props) => {
                     </div>
                   </SettingItem>
                   <SettingItem title={t('profiles.editInfo.fixedInterval')}>
-                    <Switch
+                    <LxSwitch
                       size="sm"
                       isSelected={values.allowFixedInterval ?? false}
                       onValueChange={(v) => {

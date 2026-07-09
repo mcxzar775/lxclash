@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import SettingCard from '@renderer/components/base/base-setting-card'
 import { toast } from '@renderer/components/base/toast'
 import SettingItem from '@renderer/components/base/base-setting-item'
-import { Button, Input, Switch } from '@heroui/react'
+import {Button, Input} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import {
   startSubStoreFrontendServer,
   startSubStoreBackendServer,
@@ -43,7 +44,7 @@ const SubStoreConfig: React.FC = () => {
   return (
     <SettingCard title={t('substore.title')}>
       <SettingItem title={t('substore.enable')} divider={useSubStore}>
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={useSubStore}
           onValueChange={async (v) => {
@@ -65,7 +66,7 @@ const SubStoreConfig: React.FC = () => {
       {useSubStore && (
         <>
           <SettingItem title={t('substore.allowLan')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={subStoreHost === '0.0.0.0'}
               onValueChange={async (v) => {
@@ -84,7 +85,7 @@ const SubStoreConfig: React.FC = () => {
             />
           </SettingItem>
           <SettingItem title={t('substore.useCustomBackend')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={useCustomSubStore}
               onValueChange={async (v) => {
@@ -117,7 +118,7 @@ const SubStoreConfig: React.FC = () => {
           ) : (
             <>
               <SettingItem title={t('substore.useProxy')} divider>
-                <Switch
+                <LxSwitch
                   size="sm"
                   isSelected={useProxyInSubStore}
                   onValueChange={async (v) => {

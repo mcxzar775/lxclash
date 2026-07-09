@@ -1,29 +1,17 @@
 import React from 'react'
-import { cn, Switch, SwitchProps } from '@heroui/react'
-import './border-switch.css'
+import LxSwitch, { LxSwitchProps } from './lx-switch'
+import './lx-switch.css'
 
-interface BorderSwitchProps extends Omit<SwitchProps, 'isSelected'> {
+interface BorderSwitchProps extends LxSwitchProps {
   isShowBorder?: boolean
-  isSelected?: boolean
 }
 
 const BorderSwitch: React.FC<BorderSwitchProps> = (props) => {
-  const { isShowBorder = false, isSelected = false, classNames, ...switchProps } = props
-
+  const { isShowBorder = false, className = '', ...switchProps } = props
   return (
-    <Switch
-      className="border-switch px-[8px]"
-      classNames={{
-        wrapper: cn('border-2', {
-          'border-transparent': !isShowBorder,
-          'border-primary-foreground': isShowBorder
-        }),
-        thumb: cn('absolute z-4', 'transform -translate-x-[2px]'),
-        ...classNames
-      }}
-      size="sm"
-      isSelected={isSelected}
+    <LxSwitch
       {...switchProps}
+      className={`${isShowBorder ? 'is-border-highlight' : ''} ${className}`.trim()}
     />
   )
 }

@@ -1,4 +1,5 @@
-import { Button, Input, Switch, Tab, Tabs } from '@heroui/react'
+import {Button, Input, Tab, Tabs} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { toast } from '@renderer/components/base/toast'
 import SettingCard from '@renderer/components/base/base-setting-card'
 import SettingItem from '@renderer/components/base/base-setting-item'
@@ -135,7 +136,7 @@ const GeoData: React.FC = () => {
         }
         divider={geoAutoUpdate}
       >
-        <Switch
+        <LxSwitch
           size="sm"
           isSelected={geoAutoUpdate}
           onValueChange={(v) => {

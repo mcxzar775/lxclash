@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from '@renderer/components/base/toast'
-import { Button, Input, Select, SelectItem, Switch } from '@heroui/react'
+import {Button, Input, Select, SelectItem} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { listWebdavBackups, webdavBackup, reinitWebdavBackupScheduler } from '@renderer/utils/ipc'
 import debounce from '@renderer/utils/debounce'
 import { useAppConfig } from '@renderer/hooks/use-app-config'
@@ -156,7 +157,7 @@ const WebdavConfig: React.FC = () => {
           </Select>
         </SettingItem>
         <SettingItem title={t('webdav.ignoreCert')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={webdav.webdavIgnoreCert}
             onValueChange={(v) => {

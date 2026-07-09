@@ -1,4 +1,5 @@
-import { Button, Divider, Input, Switch } from '@heroui/react'
+import {Button, Divider, Input} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import BasePage from '@renderer/components/base/base-page'
 import { showErrorSync } from '@renderer/utils/error-display'
 import SettingCard from '@renderer/components/base/base-setting-card'
@@ -146,7 +147,7 @@ const Sniffer: React.FC = () => {
     >
       <SettingCard>
         <SettingItem title={t('sniffer.enable')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.enable}
             onValueChange={(v) => {
@@ -155,7 +156,7 @@ const Sniffer: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('sniffer.overrideDestination')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.overrideDestination}
             onValueChange={(v) => {
@@ -175,7 +176,7 @@ const Sniffer: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('sniffer.forceDNSMapping')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.forceDNSMapping}
             onValueChange={(v) => {
@@ -184,7 +185,7 @@ const Sniffer: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('sniffer.parsePureIP')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.parsePureIP}
             onValueChange={(v) => {

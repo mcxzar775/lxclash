@@ -1,4 +1,5 @@
-import { Button, Tab, Input, Switch, Tabs, Divider } from '@heroui/react'
+import {Button, Tab, Input, Tabs, Divider} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import BasePage from '@renderer/components/base/base-page'
 import { showErrorSync } from '@renderer/utils/error-display'
 import { MdDeleteForever } from 'react-icons/md'
@@ -227,7 +228,7 @@ const DNS: React.FC = () => {
     >
       <SettingCard>
         <SettingItem title={t('dns.enable')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.enable}
             onValueChange={(v) => {
@@ -289,7 +290,7 @@ const DNS: React.FC = () => {
           </>
         ) : null}
         <SettingItem title="IPv6" divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.ipv6}
             onValueChange={(v) => {
@@ -298,7 +299,7 @@ const DNS: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('dns.respectRules')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.respectRules}
             onValueChange={(v) => {
@@ -328,7 +329,7 @@ const DNS: React.FC = () => {
         </div>
         <Divider className="my-2" />
         <SettingItem title={t('dns.nameserverPolicy.title')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.useNameserverPolicy}
             onValueChange={(v) => {
@@ -389,7 +390,7 @@ const DNS: React.FC = () => {
           </div>
         )}
         <SettingItem title={t('dns.systemHosts.title')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.useSystemHosts}
             onValueChange={(v) => {
@@ -398,7 +399,7 @@ const DNS: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('dns.customHosts.title')}>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={values.useHosts}
             onValueChange={(v) => {
@@ -460,7 +461,7 @@ const DNS: React.FC = () => {
       </SettingCard>
       <SettingCard title={t('dns.fallbackFilter.title')}>
         <SettingItem title={t('dns.fallbackFilter.geoip')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={!!values.fallbackGeoip}
             onValueChange={(v) => {

@@ -1,20 +1,5 @@
-import {
-  Button,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Switch,
-  Tooltip,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Spinner,
-  Chip
-} from '@heroui/react'
+import {Button, Divider, Input, Select, SelectItem, Tooltip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Spinner, Chip} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import BasePage from '@renderer/components/base/base-page'
 import { toast } from '@renderer/components/base/toast'
 import { showError } from '@renderer/utils/error-display'
@@ -448,7 +433,7 @@ const Mihomo: React.FC = () => {
             }`}
           >
             <SettingItem title={t('mihomo.enableSmartCore')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={enableSmartCore}
                 color={enableSmartCore ? 'primary' : 'default'}
@@ -480,7 +465,7 @@ const Mihomo: React.FC = () => {
                 }
                 divider={core === 'mihomo-smart'}
               >
-                <Switch
+                <LxSwitch
                   size="sm"
                   isSelected={enableSmartOverride}
                   color="primary"
@@ -595,7 +580,7 @@ const Mihomo: React.FC = () => {
                   }
                   divider
                 >
-                  <Switch
+                  <LxSwitch
                     size="sm"
                     color="primary"
                     isSelected={smartCoreUseLightGBM}
@@ -621,7 +606,7 @@ const Mihomo: React.FC = () => {
                   }
                   divider
                 >
-                  <Switch
+                  <LxSwitch
                     size="sm"
                     color="primary"
                     isSelected={smartCoreCollectData}
@@ -751,7 +736,7 @@ const Mihomo: React.FC = () => {
               >
                 <IoMdShuffle className="text-lg" />
               </Button>
-              <Switch
+              <LxSwitch
                 size="sm"
                 className="ml-2"
                 isSelected={enableMixedPort}
@@ -812,7 +797,7 @@ const Mihomo: React.FC = () => {
               >
                 <IoMdShuffle className="text-lg" />
               </Button>
-              <Switch
+              <LxSwitch
                 size="sm"
                 className="ml-2"
                 isSelected={enableSocksPort}
@@ -873,7 +858,7 @@ const Mihomo: React.FC = () => {
               >
                 <IoMdShuffle className="text-lg" />
               </Button>
-              <Switch
+              <LxSwitch
                 size="sm"
                 className="ml-2"
                 isSelected={enableHttpPort}
@@ -935,7 +920,7 @@ const Mihomo: React.FC = () => {
                 >
                   <IoMdShuffle className="text-lg" />
                 </Button>
-                <Switch
+                <LxSwitch
                   size="sm"
                   className="ml-2"
                   isSelected={enableRedirPort}
@@ -998,7 +983,7 @@ const Mihomo: React.FC = () => {
                 >
                   <IoMdShuffle className="text-lg" />
                 </Button>
-                <Switch
+                <LxSwitch
                   size="sm"
                   className="ml-2"
                   isSelected={enableTproxyPort}
@@ -1129,7 +1114,7 @@ const Mihomo: React.FC = () => {
             </div>
           </SettingItem>
           <SettingItem title={t('mihomo.ipv6')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={ipv6}
               onValueChange={(v) => {
@@ -1153,7 +1138,7 @@ const Mihomo: React.FC = () => {
             }
             divider
           >
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={allowLan}
               onValueChange={(v) => {
@@ -1396,7 +1381,7 @@ const Mihomo: React.FC = () => {
           </div>
           <Divider className="mb-2" />
           <SettingItem title={t('mihomo.useRttDelayTest')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={unifiedDelay}
               onValueChange={(v) => {
@@ -1405,7 +1390,7 @@ const Mihomo: React.FC = () => {
             />
           </SettingItem>
           <SettingItem title={t('mihomo.tcpConcurrent')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={tcpConcurrent}
               onValueChange={(v) => {
@@ -1414,7 +1399,7 @@ const Mihomo: React.FC = () => {
             />
           </SettingItem>
           <SettingItem title={t('mihomo.storeSelectedNode')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={storeSelected}
               onValueChange={(v) => {
@@ -1423,7 +1408,7 @@ const Mihomo: React.FC = () => {
             />
           </SettingItem>
           <SettingItem title={t('mihomo.storeFakeIp')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={storeFakeIp}
               onValueChange={(v) => {

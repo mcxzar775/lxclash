@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from '@renderer/components/base/toast'
-import {
-  Button,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Switch,
-  Tab,
-  Tabs,
-  Tooltip
-} from '@heroui/react'
+import {Button, Divider, Input, Select, SelectItem, Tab, Tabs, Tooltip} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import { BiCopy, BiSolidFileImport } from 'react-icons/bi'
 import useSWR from 'swr'
 import {
@@ -242,7 +233,7 @@ const GeneralConfig: React.FC = () => {
           </Select>
         </SettingItem>
         <SettingItem title={t('settings.autoStart')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={enable}
             onValueChange={async (v) => {
@@ -270,7 +261,7 @@ const GeneralConfig: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('settings.autoCheckUpdate')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={autoCheckUpdate}
             onValueChange={(v) => {
@@ -298,7 +289,7 @@ const GeneralConfig: React.FC = () => {
           </Select>
         </SettingItem>
         <SettingItem title={t('settings.silentStart')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={silentStart}
             onValueChange={(v) => {
@@ -317,7 +308,7 @@ const GeneralConfig: React.FC = () => {
           }
           divider
         >
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={autoQuitWithoutCore}
             onValueChange={(v) => {
@@ -412,7 +403,7 @@ const GeneralConfig: React.FC = () => {
           </Select>
         </SettingItem>
         <SettingItem title={t('settings.showFloatingWindow')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={showFloating}
             onValueChange={async (v) => {
@@ -429,7 +420,7 @@ const GeneralConfig: React.FC = () => {
         {showFloating && (
           <>
             <SettingItem title={t('settings.spinFloatingIcon')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={spinFloatingIcon}
                 onValueChange={async (v) => {
@@ -440,7 +431,7 @@ const GeneralConfig: React.FC = () => {
             </SettingItem>
             <SettingItem title={t('settings.floatingWindowCompatMode')} divider>
               <div className="flex items-center gap-2">
-                <Switch
+                <LxSwitch
                   size="sm"
                   isSelected={floatingWindowCompatMode}
                   onValueChange={async (v) => {
@@ -459,7 +450,7 @@ const GeneralConfig: React.FC = () => {
           </>
         )}
         <SettingItem title={t('settings.disableTray')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={disableTray}
             onValueChange={async (v) => {
@@ -475,7 +466,7 @@ const GeneralConfig: React.FC = () => {
         {!disableTray && (
           <>
             <SettingItem title={t('settings.swapTrayClick')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={swapTrayClick}
                 onValueChange={async (v) => {
@@ -488,7 +479,7 @@ const GeneralConfig: React.FC = () => {
               />
             </SettingItem>
             <SettingItem title={t('settings.disableTrayIconColor')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={disableTrayIconColor}
                 isDisabled={hasCustomTrayIcons}
@@ -556,7 +547,7 @@ const GeneralConfig: React.FC = () => {
         {platform !== 'linux' && (
           <>
             <SettingItem title={t('settings.proxyInTray')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={proxyInTray}
                 onValueChange={async (v) => {
@@ -567,7 +558,7 @@ const GeneralConfig: React.FC = () => {
             {proxyInTray && (
               <>
                 <SettingItem title={t('settings.showCurrentProxyInTray')} divider>
-                  <Switch
+                  <LxSwitch
                     size="sm"
                     isSelected={showCurrentProxyInTray}
                     onValueChange={async (v) => {
@@ -596,7 +587,7 @@ const GeneralConfig: React.FC = () => {
               })}
               divider
             >
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={showTraffic}
                 onValueChange={async (v) => {
@@ -610,7 +601,7 @@ const GeneralConfig: React.FC = () => {
         {platform === 'darwin' && (
           <>
             <SettingItem title={t('settings.showDockIcon')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={useDockIcon}
                 onValueChange={async (v) => {
@@ -622,7 +613,7 @@ const GeneralConfig: React.FC = () => {
         )}
 
         <SettingItem title={t('settings.useWindowFrame')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={useWindowFrame}
             isDisabled={isRelaunching}
@@ -640,7 +631,7 @@ const GeneralConfig: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('settings.rememberSelectedSiderCard')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={rememberSelectedSiderCard}
             onValueChange={async (v) => {
@@ -649,7 +640,7 @@ const GeneralConfig: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('settings.lockSiderCards')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={lockSiderCards}
             onValueChange={async (v) => {
@@ -658,7 +649,7 @@ const GeneralConfig: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('settings.disableAnimations')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={disableAnimations}
             onValueChange={async (v) => {
@@ -667,7 +658,7 @@ const GeneralConfig: React.FC = () => {
           />
         </SettingItem>
         <SettingItem title={t('settings.disableAppLog')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={disableAppLog}
             onValueChange={async (v) => {
@@ -689,7 +680,7 @@ const GeneralConfig: React.FC = () => {
           </Tabs>
         </SettingItem>
         <SettingItem title={t('settings.hideConnectionCardWave')} divider>
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={hideConnectionCardWave}
             onValueChange={async (v) => {
@@ -708,7 +699,7 @@ const GeneralConfig: React.FC = () => {
           }
           divider
         >
-          <Switch
+          <LxSwitch
             size="sm"
             isSelected={disableHardwareAcceleration}
             isDisabled={isRelaunching}

@@ -1,4 +1,5 @@
-import { Button, Input, Switch, Tab, Tabs } from '@heroui/react'
+import {Button, Input, Tab, Tabs} from '@heroui/react'
+import LxSwitch from '@renderer/components/base/lx-switch'
 import BasePage from '@renderer/components/base/base-page'
 import { showErrorSync } from '@renderer/utils/error-display'
 import SettingCard from '@renderer/components/base/base-setting-card'
@@ -182,7 +183,7 @@ const Tun: React.FC = () => {
           )}
           {platform === 'darwin' && (
             <SettingItem title={t('tun.dns.autoSet')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={autoSetDNS}
                 onValueChange={async (v) => {
@@ -217,7 +218,7 @@ const Tun: React.FC = () => {
           </SettingItem>
 
           <SettingItem title={t('tun.strictRoute')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={values.strictRoute}
               onValueChange={(v) => {
@@ -226,7 +227,7 @@ const Tun: React.FC = () => {
             />
           </SettingItem>
           <SettingItem title={t('tun.autoRoute')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={values.autoRoute}
               onValueChange={(v) => {
@@ -236,7 +237,7 @@ const Tun: React.FC = () => {
           </SettingItem>
           {platform === 'linux' && (
             <SettingItem title={t('tun.autoRedirect')} divider>
-              <Switch
+              <LxSwitch
                 size="sm"
                 isSelected={values.autoRedirect}
                 onValueChange={(v) => {
@@ -246,7 +247,7 @@ const Tun: React.FC = () => {
             </SettingItem>
           )}
           <SettingItem title={t('tun.autoDetectInterface')} divider>
-            <Switch
+            <LxSwitch
               size="sm"
               isSelected={values.autoDetectInterface}
               onValueChange={(v) => {
