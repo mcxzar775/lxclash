@@ -1,0 +1,163 @@
+name: Build LongXing Windows x64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  MIHOMO_VERSION: "1.19.27"
+  NPM_CONFIG_REGISTRY: "https://registry.npmjs.org/"
+  CI: "true"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+  npm_config_arch: "x64"
+  npm_config_target_arch: "x64"
+
+jobs:
+  build-windows:
+    name: Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.23.1"
+
+      - name: Check project structure
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Write-Host "Current directory: $(Get-Location)"
+          Get-ChildItem -Force
+
+          $required = @(
+            "package.json",
+            "electron.vite.config.ts",
+            "electron-builder.yml",
+            "src/main/index.ts",
+            "src/preload/index.ts",
+            "src/renderer/src/main.tsx",
+            "src/native/sysproxy/package.json",
+            "scripts/prepare.mjs",
+            "scripts/install-git-hooks.mjs"
+          )
+
+          foreach ($file in $required) {
+            if (!(Test-Path $file)) {
+              throw "ERROR: $file not found"
+            }
+          }
+
+          node -p "require('./package.json').name"
+          node -p "require('./package.json').version"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          for ($i = 1; $i -le 3; $i++) {
+            Write-Host "pnpm install attempt $i/3"
+            pnpm install --no-frozen-lockfile
+            if ($LASTEXITCODE -eq 0) { exit 0 }
+            if ($i -lt 3) { Start-Sleep -Seconds 8 }
+          }
+          throw "Dependency installation failed after 3 attempts"
+
+      - name: Typecheck
+        shell: pwsh
+        run: pnpm run typecheck
+
+      - name: Build Windows x64
+        shell: pwsh
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: pnpm run build:win:x64
+
+      - name: Find build outputs
+        id: find_outputs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $dirs = @("release", "dist", "out", "build") | Where-Object { Test-Path $_ }
+          if ($dirs.Count -eq 0) {
+            throw "ERROR: no output directory found"
+          }
+
+          Write-Host "Build files:"
+          foreach ($dir in $dirs) {
+            Get-ChildItem $dir -Recurse -File | ForEach-Object { Write-Host $_.FullName }
+          }
+
+          $packages = @()
+          foreach ($dir in $dirs) {
+            $packages += Get-ChildItem $dir -Recurse -File -Include *.exe,*.msi,*.zip,*.7z
+          }
+
+          Write-Host "Installer count: $($packages.Count)"
+          if ($packages.Count -eq 0) {
+            throw "ERROR: no EXE, MSI, ZIP or 7Z installer found"
+          }
+
+      - name: Create SHA256 files
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $dirs = @("release", "dist", "out", "build") | Where-Object { Test-Path $_ }
+          foreach ($dir in $dirs) {
+            $files = Get-ChildItem $dir -Recurse -File -Include *.exe,*.msi,*.zip,*.7z
+            foreach ($file in $files) {
+              Write-Host "Create SHA256: $($file.FullName)"
+              $hash = (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLower()
+              "$hash  $($file.Name)" | Out-File -Encoding ascii "$($file.FullName).sha256"
+            }
+          }
+
+      - name: Create GitHub prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $tag = "windows-build-${{ github.run_number }}"
+
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Delete existing release: $tag"
+            gh release delete $tag --yes --cleanup-tag
+          }
+
+          gh release create $tag `
+            --title "龙行科技 Windows x64 #${{ github.run_number }}" `
+            --notes "龙行科技 Windows x64 自动构建测试版。" `
+            --prerelease
+
+          $uploaded = 0
+          $dirs = @("release", "dist", "out", "build") | Where-Object { Test-Path $_ }
+          foreach ($dir in $dirs) {
+            $files = Get-ChildItem $dir -Recurse -File -Include *.exe,*.msi,*.zip,*.7z,*.exe.sha256,*.msi.sha256,*.zip.sha256,*.7z.sha256
+            foreach ($file in $files) {
+              Write-Host "Upload: $($file.FullName)"
+              gh release upload $tag $file.FullName --clobber
+              $uploaded++
+            }
+          }
+
+          if ($uploaded -eq 0) {
+            throw "ERROR: no files uploaded"
+          }
+
+          Write-Host "Uploaded files: $uploaded"
+          Write-Host "Release tag: $tag"
